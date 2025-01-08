@@ -428,3 +428,27 @@ test('Form_Submit_ValidatesInputs');
 test('GivenFormData_WhenSubmitting_ThenValidatesInputs');
 ```
 
+
+- Install project
+    - Install project
+    - Run lint
+    - Run test
+    - Run build
+- Structure
+    - Redux
+    - Service
+    - Validate
+- Eslint
+    - Install
+    - Config
+    - Rule
+- Tailwind
+    - Config
+    - How to use
+    - Overwrite
+- 
+
+
+
+
+
