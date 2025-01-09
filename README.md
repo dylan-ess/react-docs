@@ -1,125 +1,353 @@
-# Comprehensive Guide to ESLint Airbnb Style Guide
+# Installation and Basic Configuration
 
-## I. Installation and Basic Configuration
+## Table of Contents
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+  - [Install Project](#install-project)
+  - [Development](#development)
+  - [Build](#build)
+  - [Preview](#preview)
+  - [Linting](#linting)
+- [Scripts Overview](#scripts-overview)
+- [Project Structure](#project-structure)
+- [Flow Coding](#flow-coding)
+  - [Router](#router)
+  - [Redux](#redux)
+  - [Validate](#validate)
+- [Coding Style Detail](#coding-style-detail)
+  - [Component Structure](#component-structure)
+  - [Hooks Usage](#hooks-usage)
+  - [Type Definitions](#type-definitions)
+- [Best Practice](#best-practice)
+- [Eslint Config](#eslint-config)
+- [Tailwind CSS Integration](#tailwind-css-integration)
+- [Contributing](#contributing)
+- [License](#license)
 
-### 1. Install Dependencies
+## Prerequisites
+- Node.js (version 16 or higher)
+- npm or yarn package manager
+
+## Getting Started
+
+### Install Project
+To install the project dependencies:
+
 ```bash
-# Install ESLint and required plugins
-npm install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y eslint-config-airbnb eslint-config-airbnb-typescript eslint-plugin-import
+# Using npm
+npm install
 
-# Install Prettier and plugins
-npm install --save-dev prettier eslint-config-prettier eslint-plugin-prettier
+# Using yarn
+yarn install
 ```
 
-### 2. ESLint Configuration (.eslintrc.js)
-```javascript
-module.exports = {
-  root: true,
-  env: {
-    browser: true,
-    es2021: true,
-    node: true,
-  },
-  extends: [
-    'airbnb',
-    'airbnb-typescript',
-    'airbnb/hooks',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react/recommended',
-    'plugin:prettier/recommended',
-  ],
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: './tsconfig.json',
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    ecmaFeatures: {
-      jsx: true,
+### Development
+Start the development server using Vite:
+
+```bash
+# Using npm
+npm run dev
+
+# Using yarn
+yarn dev
+```
+
+The development server will be running at `http://localhost:3000`
+
+### Build
+Create a production build:
+
+```bash
+# Using npm
+npm run build
+
+# Using yarn
+yarn build
+```
+
+This command will:
+1. Run TypeScript compilation (`tsc -b`)
+2. Build the project using Vite (`vite build`)
+
+### Preview
+To preview the production build locally:
+
+```bash
+# Using npm
+npm run preview
+
+# Using yarn
+yarn preview
+```
+
+This will start a local server to preview your production build.
+
+### Linting
+Check code style and find potential issues:
+
+```bash
+# Using npm
+npm run lint
+
+# Using yarn
+yarn lint
+```
+
+Fix lint issues automatically:
+
+```bash
+# Using npm
+npm run lint:fix
+
+# Using yarn
+yarn lint:fix
+```
+
+## Scripts Overview
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start Vite development server |
+| `npm run build` | Run TypeScript compilation and create production build |
+| `npm run preview` | Preview production build locally |
+| `npm run lint` | Check code style in src directory |
+| `npm run lint:fix` | Fix lint issues automatically in src directory |
+
+## Project Structure
+```
+src/
+├── assets/           # Static assets, images, fonts, etc.
+├── components/       # Reusable UI components
+├── layouts/         # Layout components
+├── pages/           # Page components
+├── routes/          # Route configurations
+├── schemas/         # Data schemas and validations
+├── services/        # API services and external integrations
+├── store/           # State management
+├── styles/          # Global styles and theme
+├── types/           # TypeScript type definitions
+├── App.tsx          # Root application component
+└── main.tsx         # Application entry point
+
+Root files:
+├── .gitignore       # Git ignore configuration
+├── eslint.config.js # ESLint configuration
+├── index.html       # HTML entry point
+├── package.json     # Project dependencies and scripts
+├── package-lock.json# Lock file for npm dependencies
+├── postcss.config.cjs # PostCSS configuration
+├── README.md        # Project documentation
+├── tailwind.config.js # Tailwind CSS configuration
+├── tsconfig.app.json # TypeScript configuration for app
+├── tsconfig.json    # Base TypeScript configuration
+├── tsconfig.node.json # TypeScript configuration for Node
+├── vite-env.d.ts    # Vite environment declarations
+├── vite.config.ts   # Vite configuration
+└── yarn.lock        # Lock file for yarn dependencies
+```
+
+## Flow Coding
+
+### Redux
+
+### Store Structure
+```
+store/
+├── constants/
+│   ├── actionTypes.ts    # Action type constants
+│   └── nameSlices.ts     # Slice name constants
+├── slices/
+│   ├── exampleSlice.ts   # Example slice implementation
+│   └── store.ts          # Root store configuration
+```
+
+### Implementation Flow
+
+#### 1. Constants Setup (`constants/`)
+
+##### `nameSlices.ts`
+```typescript
+// Define slice names to avoid string literals
+export const SLICE_NAMES = {
+  EXAMPLE: 'example',
+  // Add other slice names
+} as const;
+```
+
+#### `actionTypes.ts`
+```typescript
+// Define action type constants
+export const EXAMPLE_ACTIONS = {
+  SET_DATA: 'example/setData',
+  RESET: 'example/reset',
+  // Add other action types
+} as const;
+```
+
+### 2. Slice Implementation (`slices/exampleSlice.ts`)
+```typescript
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { SLICE_NAMES } from '../constants/nameSlices';
+
+// Define the state interface
+interface ExampleState {
+  data: string[];
+  isLoading: boolean;
+  error: string | null;
+}
+
+// Initial state
+const initialState: ExampleState = {
+  data: [],
+  isLoading: false,
+  error: null,
+};
+
+// Create the slice
+const exampleSlice = createSlice({
+  name: SLICE_NAMES.EXAMPLE,
+  initialState,
+  reducers: {
+    setData: (state, action: PayloadAction<string[]>) => {
+      state.data = action.payload;
+    },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
+    setError: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload;
+    },
+    reset: (state) => {
+      return initialState;
     },
   },
-  rules: {
-    // Detailed rules will be listed in later sections
-  }
+});
+
+// Export actions and reducer
+export const { setData, setLoading, setError, reset } = exampleSlice.actions;
+export default exampleSlice.reducer;
+
+// Selectors
+export const selectData = (state: RootState) => state.example.data;
+export const selectIsLoading = (state: RootState) => state.example.isLoading;
+export const selectError = (state: RootState) => state.example.error;
+```
+
+### 3. Store Configuration (`store.ts`)
+```typescript
+import { configureStore } from '@reduxjs/toolkit';
+import exampleReducer from './slices/exampleSlice';
+
+export const store = configureStore({
+  reducer: {
+    example: exampleReducer,
+    // Add other reducers
+  },
+});
+
+// Export types
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+```
+
+### 4. Usage in Components
+```typescript
+import { useDispatch, useSelector } from 'react-redux';
+import { setData, selectData, selectIsLoading } from '../store/slices/exampleSlice';
+
+const ExampleComponent = () => {
+  const dispatch = useDispatch();
+  const data = useSelector(selectData);
+  const isLoading = useSelector(selectIsLoading);
+
+  const handleUpdateData = (newData: string[]) => {
+    dispatch(setData(newData));
+  };
+
+  return (
+    // Your component JSX
+  );
 };
 ```
 
-## II. Project Structure and Naming Conventions
+## Best Practices
 
-### 1. Directory Structure
-```
-src/
-├── assets/               # Static files like images, fonts
-│   ├── images/
-│   └── fonts/
-├── components/           # Shared/Reusable components
-│   ├── Button/
-│   │   ├── Button.tsx
-│   │   ├── Button.test.tsx
-│   │   ├── Button.styles.ts
-│   │   └── index.ts
-│   └── UserProfile/
-│       └── UserProfile.tsx
-├── features/            # Feature-based modules
-│   ├── auth/
-│   │   ├── components/
-│   │   ├── hooks/
-│   │   └── services/
-│   └── dashboard/
-├── hooks/               # Custom hooks
-│   ├── useAuth.ts
-│   └── useForm.ts
-├── layouts/            # Layout components
-│   ├── MainLayout/
-│   └── AuthLayout/
-├── pages/              # Page components
-│   ├── Home/
-│   └── About/
-├── services/           # API services
-│   ├── api.ts
-│   └── auth.service.ts
-├── store/             # State management
-│   ├── slices/
-│   └── store.ts
-├── styles/            # Global styles
-│   └── global.css
-├── types/             # TypeScript types
-│   └── index.ts
-├── utils/             # Utility functions
-│   └── helpers.ts
-└── App.tsx
-```
+1. **Slice Organization**
+   - Keep slice names in a central constants file
+   - Create separate files for each slice
+   - Export selectors alongside the slice
 
-### 2. File Naming Conventions
+2. **Type Safety**
+   - Define interfaces for all state shapes
+   - Use PayloadAction type for action creators
+   - Export and use RootState type for selectors
 
+3. **State Updates**
+   - Use Redux Toolkit's built-in Immer integration
+   - Avoid nested spreads
+   - Keep state normalized when possible
+
+4. **Performance**
+   - Use specific selectors instead of selecting entire state
+   - Memoize complex selectors with createSelector
+   - Split large slices into smaller ones
+
+## Common Patterns
+
+### Async Actions with createAsyncThunk
 ```typescript
-// 1. Components (PascalCase)
-Button.tsx
-UserProfile.tsx
-NavigationBar.tsx
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
-// 2. Hooks (camelCase, prefixed with use)
-useAuth.ts
-useForm.ts
-useLocalStorage.ts
+export const fetchData = createAsyncThunk(
+  'example/fetchData',
+  async (params: FetchParams, { rejectWithValue }) => {
+    try {
+      const response = await api.getData(params);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
-// 3. Utils/Helpers (camelCase)
-formatDate.ts
-validationHelpers.ts
-apiUtils.ts
-
-// 4. Constants (SCREAMING_SNAKE_CASE)
-API_ENDPOINTS.ts
-ROUTES.ts
-ACTION_TYPES.ts
-
-// 5. Types/Interfaces (PascalCase)
-UserTypes.ts
-ApiResponse.ts
+// In slice:
+extraReducers: (builder) => {
+  builder
+    .addCase(fetchData.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(fetchData.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.data = action.payload;
+    })
+    .addCase(fetchData.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload as string;
+    });
+}
 ```
 
-## III. Coding Style Details
+### Custom Middleware
+```typescript
+import { Middleware } from '@reduxjs/toolkit';
 
-### 1. Component Structure
+export const loggingMiddleware: Middleware = (store) => (next) => (action) => {
+  console.log('Dispatching:', action);
+  const result = next(action);
+  console.log('Next State:', store.getState());
+  return result;
+};
+
+// Add to store:
+middleware: (getDefaultMiddleware) =>
+  getDefaultMiddleware().concat(loggingMiddleware)
+```
+
+### Validate
+
+## Coding Style Detail
+
+### Component Structure
 ```typescript
 // Button.tsx
 import React from 'react';
@@ -172,7 +400,7 @@ export const Button: React.FC<Props> = ({
 };
 ```
 
-### 2. Hooks Usage
+### Hooks Usage
 ```typescript
 // useAuth.ts
 import { useState, useEffect } from 'react';
@@ -201,7 +429,7 @@ export const useAuth = () => {
 };
 ```
 
-### 3. Type Definitions
+### Type Definitions
 ```typescript
 // types/user.types.ts
 export interface User {
@@ -222,102 +450,7 @@ export interface UserState {
 }
 ```
 
-## IV. ESLint Rules Configuration
-
-### 1. React Rules
-```javascript
-{
-  // Component naming and definition
-  'react/function-component-definition': ['error', {
-    namedComponents: 'arrow-function',
-    unnamedComponents: 'arrow-function',
-  }],
-  'react/jsx-pascal-case': ['error', {
-    allowAllCaps: true,
-    ignore: [],
-  }],
-
-  // Props validation
-  'react/prop-types': 'off', // Disabled for TypeScript
-  'react/require-default-props': 'off',
-  'react/jsx-props-no-spreading': ['error', {
-    html: 'enforce',
-    custom: 'enforce',
-    explicitSpread: 'ignore',
-    exceptions: ['Component'],
-  }],
-
-  // JSX formatting
-  'react/jsx-max-props-per-line': ['error', {
-    maximum: 1,
-    when: 'multiline',
-  }],
-  'react/jsx-first-prop-new-line': ['error', 'multiline'],
-  'react/jsx-closing-bracket-location': ['error', 'line-aligned'],
-
-  // Hooks rules
-  'react-hooks/rules-of-hooks': 'error',
-  'react-hooks/exhaustive-deps': 'warn',
-}
-```
-
-### 2. TypeScript Rules
-```javascript
-{
-  '@typescript-eslint/explicit-function-return-type': ['error', {
-    allowExpressions: true,
-    allowTypedFunctionExpressions: true,
-  }],
-  '@typescript-eslint/no-explicit-any': 'warn',
-  '@typescript-eslint/no-unused-vars': ['error', {
-    vars: 'all',
-    args: 'after-used',
-    ignoreRestSiblings: true,
-  }],
-  '@typescript-eslint/naming-convention': [
-    'error',
-    {
-      selector: 'interface',
-      format: ['PascalCase'],
-      prefix: ['I'],
-    },
-    {
-      selector: 'typeAlias',
-      format: ['PascalCase'],
-    },
-  ],
-}
-```
-
-### 3. Import Rules
-```javascript
-{
-  'import/order': ['error', {
-    groups: [
-      'builtin',
-      'external',
-      'internal',
-      'parent',
-      'sibling',
-      'index',
-    ],
-    'newlines-between': 'always',
-    alphabetize: {
-      order: 'asc',
-      caseInsensitive: true,
-    },
-  }],
-  'import/no-cycle': 'error',
-  'import/no-unresolved': 'error',
-  'import/prefer-default-export': 'off',
-  'import/extensions': ['error', 'never', {
-    css: 'always',
-    json: 'always',
-  }],
-}
-```
-
-## V. Best Practices
+## Best Practice
 
 ### 1. Component Best Practices
 ```typescript
@@ -391,64 +524,188 @@ const fetchData = async () => {
 };
 ```
 
-## VI. Testing Conventions
+## Eslint Config
 
-### 1. Test File Structure
+### File Naming Conventions
+
 ```typescript
-// Button.test.tsx
-import { render, fireEvent } from '@testing-library/react';
-import { Button } from './Button';
+// 1. Components (PascalCase)
+Button.tsx
+UserProfile.tsx
+NavigationBar.tsx
 
-describe('Button', () => {
-  const defaultProps = {
-    variant: 'primary',
-    onClick: jest.fn(),
-  };
+// 2. Hooks (camelCase, prefixed with use)
+useAuth.ts
+useForm.ts
+useLocalStorage.ts
 
-  it('renders correctly', () => {
-    const { getByRole } = render(<Button {...defaultProps}>Click me</Button>);
-    expect(getByRole('button')).toBeInTheDocument();
-  });
+// 3. Utils/Helpers (camelCase)
+formatDate.ts
+validationHelpers.ts
+apiUtils.ts
 
-  it('handles click events', () => {
-    const { getByRole } = render(<Button {...defaultProps}>Click me</Button>);
-    fireEvent.click(getByRole('button'));
-    expect(defaultProps.onClick).toHaveBeenCalled();
-  });
-});
+// 4. Constants (SCREAMING_SNAKE_CASE)
+API_ENDPOINTS.ts
+ROUTES.ts
+ACTION_TYPES.ts
+
+// 5. Types/Interfaces (PascalCase)
+UserTypes.ts
+ApiResponse.ts
 ```
 
-### 2. Test Naming Conventions
-```typescript
-// Component_action_expectedResult
-test('Button_Click_CallsOnClickHandler');
-test('Form_Submit_ValidatesInputs');
+## Tailwind CSS Integration
 
-// given_when_then
-test('GivenFormData_WhenSubmitting_ThenValidatesInputs');
+### Setup and Configuration
+The project uses Tailwind CSS for styling. The configuration is defined in `tailwind.config.js`:
+
+```javascript
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      // Your custom theme extensions
+    },
+  },
+  plugins: [],
+}
 ```
 
+### Using Tailwind CSS
 
-- Install project
-    - Install project
-    - Run lint
-    - Run test
-    - Run build
-- Structure
-    - Redux
-    - Service
-    - Validate
-- Eslint
-    - Install
-    - Config
-    - Rule
-- Tailwind
-    - Config
-    - How to use
-    - Overwrite
-- 
+#### Basic Usage
+Use Tailwind's utility classes directly in your JSX:
 
+```jsx
+function Button({ children }) {
+  return (
+    <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
+      {children}
+    </button>
+  );
+}
+```
 
+#### Common Patterns
+1. **Responsive Design**:
+```jsx
+<div className="w-full md:w-1/2 lg:w-1/3">
+  {/* Content adapts at different breakpoints */}
+</div>
+```
 
+2. **Hover, Focus, and Other States**:
+```jsx
+<button className="bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:ring-blue-300">
+  Click me
+</button>
+```
 
+3. **Flex and Grid Layouts**:
+```jsx
+<div className="flex items-center justify-between">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    {/* Content */}
+  </div>
+</div>
+```
 
+### Customizing Tailwind
+
+#### Extending Theme
+Add custom values to your theme in `tailwind.config.js`:
+
+```javascript
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        'custom-primary': '#FF5733',
+        'custom-secondary': '#33FF57',
+      },
+      spacing: {
+        '128': '32rem',
+      },
+      fontFamily: {
+        'custom': ['CustomFont', 'sans-serif'],
+      },
+    },
+  },
+}
+```
+
+#### Custom Classes
+Create custom utility classes in your CSS file:
+
+```css
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors;
+  }
+}
+```
+
+#### Using Custom Values
+After defining custom values, use them in your components:
+
+```jsx
+<div className="text-custom-primary bg-custom-secondary font-custom">
+  Custom styled content
+</div>
+```
+
+### Best Practices
+
+1. **Organization**
+   - Group related utilities: `className="[Layout] [Spacing] [Colors] [Effects]"`
+   - Example: `className="flex items-center p-4 bg-blue-500 shadow-md"`
+
+2. **Reusability**
+   - Extract common patterns into components
+   - Use composition over repetition
+
+3. **Responsive Design**
+   - Start with mobile design first
+   - Use responsive prefixes systematically: `sm:`, `md:`, `lg:`, `xl:`
+
+4. **Dark Mode**
+   - Use dark mode variant: `dark:`
+   - Example: `className="bg-white dark:bg-gray-800"`
+
+### Common Issues and Solutions
+
+1. **Purging Issues**
+   - Ensure your content paths in `tailwind.config.js` include all files using Tailwind classes
+   - Don't use dynamic class names without safelist
+
+2. **Build Performance**
+   - Use JIT mode (enabled by default in Tailwind CSS v3)
+   - Remove unused plugin imports
+
+3. **Class Conflicts**
+   - Use `@apply` with caution
+   - Maintain a consistent order of utility classes
+
+### Tips and Tricks
+
+1. **VS Code Extensions**
+   - Install "Tailwind CSS IntelliSense" for auto-completion
+   - Use "Headwind" for consistent class ordering
+
+2. **Debugging**
+   - Use browser dev tools to inspect computed styles
+   - Temporarily add borders/backgrounds to debug layouts: `border border-red-500`
+
+3. **Performance**
+   - Use `@apply` for frequently reused patterns
+   - Leverage CSS variables for dynamic values
+
+## Contributing
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
