@@ -156,12 +156,25 @@ Root files:
 - Don't use `git add .` for all cases. Typing slow, Thinking more. Maybe at the current time, we just need to apply some of files changed.
 
 **`git commit` Flow**
-1. Typing `git commit` instead of `git commit -m "(type): title string"`
+Typing `git commit` instead of `git commit -m "(type): title string"`
 
 - The system will run the `lint-staged` script in the `pre-commit` setup of the `husky` file.
 - The `lint-staged` script will run `npm run lint` to check the eslint rules for all of project.
   - IF The project is not valid, the commit process will fail.
-  - ELSE, you will pass the eslint and can push your code after that.
+  - ELSE, you will pass the eslint and just do some important steps before push your code.
+
+1. Select the `type` of the commit
+
+feat, style, test, fix, docs, release, update, perf, chore
+
+2. Select the `scope` of `type`
+
+layout, page, component, service, util, hook, store, route, type, schemas, other
+
+3. Input the `commit title`
+4. Input the `commit description`
+5. Press `esc` > `:` > `wq` to write and quit
+6. Run `git push`
 
 ### Redux
 
