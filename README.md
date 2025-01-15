@@ -14,6 +14,7 @@
   - [Router](#router)
   - [Redux](#redux)
   - [Validate](#validate)
+- [Commit Flow](#commit-flow)
 - [Coding Style Detail](#coding-style-detail)
   - [Component Structure](#component-structure)
   - [Hooks Usage](#hooks-usage)
