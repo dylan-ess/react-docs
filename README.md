@@ -149,6 +149,20 @@ Root files:
 
 ## Flow Coding
 
+<h2 id="commit-flow">Commit Flow</h2>
+
+**Remember**
+- run `npm run prettier:fix` before `git add [...]`.
+- Don't use `git add .` for all cases. Typing slow, Thinking more. Maybe at the current time, we just need to apply some of files changed.
+
+**`git commit` Flow**
+1. Typing `git commit` instead of `git commit -m "(type): title string"`
+
+- The system will run the `lint-staged` script in the `pre-commit` setup of the `husky` file.
+- The `lint-staged` script will run `npm run lint` to check the eslint rules for all of project.
+  - IF The project is not valid, the commit process will fail.
+  - ELSE, you will pass the eslint and can push your code after that.
+
 ### Redux
 
 ### Store Structure
