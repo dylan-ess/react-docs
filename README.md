@@ -167,6 +167,18 @@ Typing `git commit` instead of `git commit -m "(type): title string"`
 
 feat, style, test, fix, docs, release, update, perf, chore
 
+| Type | Description |
+|---------|-------------|
+| feat | Create a new feature |
+| style | Only style for layout |
+| test | Add / change a test |
+| fix | Fix a bug |
+| docs | Create / change some document files (ex: *.docs, *.md) |
+| release | Create a release commit |
+| update | Update but not improve performance |
+| perf | Improve performance |
+| chore | If you don't know the type will select |
+
 2. Select the `scope` of `type`
 
 layout, page, component, service, util, hook, store, route, type, schemas, other
