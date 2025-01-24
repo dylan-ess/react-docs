@@ -53,7 +53,7 @@ npm run dev
 yarn dev
 ```
 
-The development server will be running at `http://localhost:3000`
+The development server will be running at `http://localhost:5173`
 
 ### Build
 Create a production build:
