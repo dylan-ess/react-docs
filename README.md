@@ -11,6 +11,7 @@
 - [Scripts Overview](#scripts-overview)
 - [Project Structure](#project-structure)
 - [Flow Coding](#flow-coding)
+  - [Commit Flow](#commit-flow)
   - [Router](#router)
   - [Redux](#redux)
   - [Validate](#validate)
@@ -149,7 +150,7 @@ Root files:
 
 ## Flow Coding
 
-<h2 id="commit-flow">Commit Flow</h2>
+### Commit Flow
 
 **Remember**
 - run `npm run prettier:fix` before `git add [...]`.
